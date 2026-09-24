@@ -1,0 +1,55 @@
+import type { MockupItem } from '../types';
+import { photo } from './PhotoScene';
+
+export const photoAccessories: MockupItem[] = [
+	{
+		id: 'foto-bolso-estructurado',
+		title: 'Bolso estructurado en cuero cognac',
+		category: 'accesorios',
+		technique: 'Bajorrelieve (deboss) sin tinta',
+		material: 'Cuero granulado cognac',
+		note: 'Isologo pequeño y discreto grabado en el panel frontal, como en marroquinería de lujo.',
+		credit: { photographer: 'MiM Fathi', url: 'https://www.pexels.com/photo/brown-leather-handbag-on-white-table-10919291/' },
+		Scene: photo('/mockups/acc-bolso-estructurado-cognac.jpg', 'Bolso de cuero cognac con el isologo grabado en el panel frontal', []),
+	},
+	{
+		id: 'foto-tote-crema',
+		title: 'Tote estructurado en cuero crema',
+		category: 'accesorios',
+		technique: 'Hot stamping dorado',
+		material: 'Cuero saffiano color crudo',
+		note: 'El dorado sobre un cuero claro aporta el contraste de lujo sin recargar la pieza.',
+		credit: { photographer: 'Mohaned tamzini', url: 'https://www.pexels.com/photo/display-of-elegant-white-leather-purse-and-heel-17938771/' },
+		Scene: photo('/mockups/acc-tote-crema.jpg', 'Tote de cuero crema con el isologo dorado estampado', []),
+	},
+	{
+		id: 'foto-clutch-charol-negro',
+		title: 'Mini bolso de charol negro',
+		category: 'accesorios',
+		technique: 'Hot stamping dorado',
+		material: 'Charol negro con herrajes dorados',
+		note: 'El dorado del estampado combina con la cadena y los herrajes de la pieza.',
+		credit: { photographer: 'Zulfugar Karimov', url: 'https://www.pexels.com/photo/elegant-black-handbag-with-gold-chain-detail-35115815/' },
+		Scene: photo('/mockups/acc-clutch-negro.jpg', 'Mini bolso de charol negro con el símbolo dorado estampado', []),
+	},
+	{
+		id: 'foto-llavero-cuero',
+		title: 'Llavero de cuero con mosquetón',
+		category: 'accesorios',
+		technique: 'Hot stamping dorado',
+		material: 'Cuero negro con herraje niquelado',
+		note: 'Regalo de baja inversión y alta rotación: ideal para puntos de venta y colaboraciones.',
+		credit: { photographer: 'Aleksandrs Karevs', url: 'https://www.pexels.com/photo/keys-beside-a-leather-wallet-15440419/' },
+		Scene: photo('/mockups/acc-llavero-cuero.jpg', 'Llavero de cuero negro con el símbolo estampado en dorado', []),
+	},
+	{
+		id: 'foto-neceser-lino',
+		title: 'Neceser de lino con cordón',
+		category: 'accesorios',
+		technique: 'Serigrafía 1 tinta',
+		material: 'Lino/algodón crudo',
+		note: 'Formato económico para amenities de viaje o regalos con compra.',
+		credit: { photographer: 'ready made', url: 'https://www.pexels.com/photo/white-textile-bag-with-drawstrings-placed-on-marble-table-3850465/' },
+		Scene: photo('/mockups/acc-neceser-lino.jpg', 'Neceser de lino crudo con el isologo impreso', []),
+	},
+];

@@ -59,6 +59,20 @@ const ASSETS: Record<MarkKind, { ratio: number; all: string; navy: string; gold:
 	},
 };
 
+/** Relación ancho/alto de cada pieza. */
+export const MARK_RATIO: Record<MarkKind, number> = {
+	symbol: ASSETS.symbol.ratio,
+	isologo: ASSETS.isologo.ratio,
+	wordmark: ASSETS.wordmark.ratio,
+};
+
+/** Máscara completa (silueta) de cada pieza. */
+export const MARK_MASK: Record<MarkKind, string> = {
+	symbol: ASSETS.symbol.all,
+	isologo: ASSETS.isologo.all,
+	wordmark: ASSETS.wordmark.all,
+};
+
 export interface MarkProps {
 	kind?: MarkKind;
 	/** Pintura de las partes azul marino del original. */

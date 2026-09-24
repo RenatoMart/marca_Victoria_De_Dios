@@ -41,3 +41,9 @@ Thumbs.db
 *.njsproj
 *.sln
 *.sw?
+
+# Kit temporal para generar imágenes a mano
+_generar/
+
+# Guía personal de prompts (no se publica)
+Imagen-generator-prompt.md

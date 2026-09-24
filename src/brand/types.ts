@@ -20,5 +20,7 @@ export interface MockupItem {
 	material: string;
 	/** Una línea de contexto opcional. */
 	note?: string;
+	/** Crédito de la fotografía base, si la maqueta usa una foto. */
+	credit?: { photographer: string; url: string };
 	Scene: ComponentType;
 }

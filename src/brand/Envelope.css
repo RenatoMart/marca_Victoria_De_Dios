@@ -1,0 +1,182 @@
+/* Portada: sobre que se abre con el scroll */
+.vd-env {
+	position: relative;
+	height: 260vh;
+	background: radial-gradient(80% 50% at 50% 30%, #1d2536 0%, var(--vd-night) 70%);
+}
+
+.vd-env__stage {
+	position: sticky;
+	top: 56px;
+	height: calc(100svh - 56px);
+	display: grid;
+	place-items: center;
+	overflow: hidden;
+}
+
+.vd-env__body {
+	position: relative;
+	width: min(660px, 86vw, calc((100svh - 56px) * 0.86));
+	aspect-ratio: 3 / 2;
+	perspective: 1100px;
+	perspective-origin: 50% -90%;
+}
+
+/* Interior del sobre */
+.vd-env__back {
+	position: absolute;
+	inset: 0;
+	z-index: 1;
+	border-radius: 3px;
+	background: linear-gradient(180deg, #0e131d, #121927);
+	box-shadow: 0 50px 90px -40px rgba(0, 0, 0, 0.75);
+}
+
+/* Tarjeta del manual */
+.vd-env__letter {
+	position: absolute;
+	top: 5%;
+	left: 5%;
+	right: 5%;
+	height: 90%;
+	z-index: 2;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: clamp(10px, 2vw, 20px);
+	padding-top: 7%;
+	background: var(--vd-ivory);
+	box-shadow: 0 -1px 0 rgba(255, 255, 255, 0.6) inset;
+	will-change: transform;
+}
+
+.vd .vd-env__letter h1 {
+	font-family: var(--vd-font-body);
+	font-size: clamp(0.56rem, 1.3vw, 0.72rem);
+	font-weight: 500;
+	letter-spacing: 0.3em;
+	text-transform: uppercase;
+	color: var(--vd-ink-soft);
+	text-align: center;
+	padding: 0 8%;
+}
+
+/* Frente del sobre: bolsillo con muesca en V */
+.vd-env__pocket {
+	position: absolute;
+	inset: 0;
+	z-index: 3;
+	border-radius: 3px;
+	background:
+		linear-gradient(28deg, transparent 49.6%, rgba(255, 255, 255, 0.05) 50%, transparent 50.4%),
+		linear-gradient(-28deg, transparent 49.6%, rgba(0, 0, 0, 0.18) 50%, transparent 50.4%),
+		linear-gradient(180deg, #222c42 0%, #1a2233 100%);
+	clip-path: polygon(0 0, 50% 54%, 100% 0, 100% 100%, 0 100%);
+}
+
+/* Solapa */
+.vd-env__flap {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 58%;
+	z-index: 4;
+	transform-origin: 50% 0;
+	transform-style: preserve-3d;
+	will-change: transform;
+}
+
+.vd-env__face {
+	position: absolute;
+	inset: 0;
+	clip-path: polygon(0 0, 100% 0, 50% 100%);
+	backface-visibility: hidden;
+}
+
+.vd-env__shade {
+	position: absolute;
+	inset: 0;
+	opacity: 0;
+	will-change: opacity;
+}
+
+.vd-env__face--front .vd-env__shade {
+	background: linear-gradient(0deg, rgba(5, 8, 14, 0.45), rgba(5, 8, 14, 0.15));
+}
+
+.vd-env__face--back .vd-env__shade {
+	opacity: 1;
+	background: linear-gradient(180deg, rgba(5, 8, 14, 0.5), rgba(5, 8, 14, 0.2));
+}
+
+.vd-env__face--front {
+	background: linear-gradient(180deg, #273149 0%, #1e273b 100%);
+}
+
+/* Forro interior: se ve al abrir. Se recorta invertido porque la cara está girada 180°,
+   así al abrir queda con el lado ancho en el borde del sobre y la punta hacia arriba. */
+.vd-env__face--back {
+	clip-path: polygon(50% 0, 100% 100%, 0 100%);
+	transform: rotateX(180deg);
+	background: linear-gradient(0deg, #2d3953 0%, #243049 100%);
+}
+
+/* Sello de lacre con el símbolo */
+.vd-env__seal {
+	position: absolute;
+	left: 50%;
+	top: 100%;
+	width: clamp(64px, 12vw, 104px);
+	translate: -50% -58%;
+	backface-visibility: hidden;
+	will-change: transform, opacity;
+}
+
+.vd-env__seal-press {
+	display: block;
+	filter: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.45));
+}
+
+.vd-env__cue {
+	position: absolute;
+	bottom: 28px;
+	left: 50%;
+	transform: translateX(-50%);
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 12px;
+	font-size: 0.8rem;
+	color: rgba(245, 240, 230, 0.55) !important;
+	transition: color 0.2s;
+}
+
+.vd-env__cue::after {
+	content: '';
+	width: 1px;
+	height: 28px;
+	background: currentColor;
+}
+
+.vd-env__cue:hover {
+	color: var(--vd-ivory) !important;
+}
+
+/* Movimiento reducido: sobre ya abierto, sin fijar la sección */
+.vd-env.is-static {
+	height: auto;
+}
+
+.vd-env.is-static .vd-env__stage {
+	position: relative;
+	top: 0;
+	height: auto;
+	min-height: 640px;
+	padding: 120px 0 64px;
+}
+
+.vd-env.is-static .vd-env__cue {
+	display: none;
+}
+

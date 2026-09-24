@@ -1,0 +1,55 @@
+import type { MockupItem } from '../types';
+import { photo } from './PhotoScene';
+
+export const photoPackaging: MockupItem[] = [
+	{
+		id: 'foto-bolsa-kraft',
+		title: 'Bolsa kraft con asas trenzadas',
+		category: 'empaques',
+		technique: 'Flexografía 1 tinta',
+		material: 'Papel kraft 120 g',
+		note: 'Una tinta oscura sobre kraft: la opción más económica y la que mejor envejece.',
+		credit: { photographer: 'PNW Production', url: 'https://www.pexels.com/photo/8490403/' },
+		Scene: photo('/mockups/bolsa-kraft-flatlay.jpg', 'Bolsa kraft con el isologo', []),
+	},
+	{
+		id: 'foto-caja-envio-kraft',
+		title: 'Caja de envío en cartón kraft',
+		category: 'empaques',
+		technique: 'Sello de tinta 1 color',
+		material: 'Cartón kraft corrugado',
+		note: 'Sello directo sobre la caja: barato de producir y coherente con el resto de la papelería kraft.',
+		credit: { photographer: 'Mediamodifier', url: 'https://www.pexels.com/photo/brown-cardboard-box-on-white-surface-8066784/' },
+		Scene: photo('/mockups/emp-caja-envio-kraft.jpg', 'Caja de envío kraft con el isologo sellado', []),
+	},
+	{
+		id: 'foto-bolsa-tela-blanca',
+		title: 'Bolsa de algodón con logo bordado',
+		category: 'empaques',
+		technique: 'Bordado',
+		material: 'Algodón orgánico crudo',
+		note: 'Bordado pequeño y discreto: el tamaño clásico para una tote bag de regalo.',
+		credit: { photographer: 'Artem Podrez', url: 'https://www.pexels.com/photo/a-person-holding-a-tote-bag-6787035/' },
+		Scene: photo('/mockups/emp-bolsa-tela-blanca.jpg', 'Bolsa de algodón crudo con el isologo bordado', []),
+	},
+	{
+		id: 'foto-caja-regalo-negra',
+		title: 'Caja rígida negra con cinta',
+		category: 'empaques',
+		technique: 'Hot stamping dorado',
+		material: 'Caja rígida forrada en papel negro',
+		note: 'Estampado en caliente sobre caja rígida: la opción de mayor percepción de lujo para ediciones especiales.',
+		credit: { photographer: 'Max Fischer', url: 'https://www.pexels.com/photo/close-up-shot-of-black-gift-boxes-5872362/' },
+		Scene: photo('/mockups/emp-caja-regalo-negra.jpg', 'Cajas de regalo negras con el isologo y el símbolo en dorado', []),
+	},
+	{
+		id: 'foto-sello-cera',
+		title: 'Sello de cera sobre papel de algodón',
+		category: 'empaques',
+		technique: 'Sello de cera en relieve',
+		material: 'Cera y papel de algodón hecho a mano',
+		note: 'Toque final artesanal para envíos y ediciones limitadas; se aplica a mano, pieza por pieza.',
+		credit: { photographer: 'Anna Tarazevich', url: 'https://www.pexels.com/photo/close-up-photo-of-a-stamp-on-a-paper-5425648/' },
+		Scene: photo('/mockups/emp-sello-cera.jpg', 'Sello de cera con el símbolo de Victoria de Dios', []),
+	},
+];

@@ -6,12 +6,18 @@
 	--vd-gold: #ae8c46;
 	--vd-gold-light: #d8bd7e;
 	--vd-ivory: #f5f0e6;
-	--vd-paper: #fbf8f2;
 	--vd-onyx: #121214;
 	--vd-kraft: #c19a6b;
-	--vd-kraft-dark: #9c7a50;
-	--vd-line: rgba(31, 42, 62, 0.14);
-	--vd-muted: #5d6475;
+
+	/* Interfaz del manual */
+	--vd-paper: #faf8f4;
+	--vd-ink: #1f2a3e;
+	--vd-ink-soft: #5e6472;
+	--vd-thread: #ddd6c8;
+	--vd-night: #141a26;
+	--vd-accent: #a88945;
+	--vd-line: var(--vd-thread);
+	--vd-muted: var(--vd-ink-soft);
 
 	/* Acabados (valores de background reutilizables) */
 	--vd-foil: linear-gradient(
@@ -38,6 +44,6 @@
 	--vd-font-caps: 'Cinzel', 'Trajan Pro', serif;
 	--vd-font-body: 'Jost', 'Montserrat', system-ui, sans-serif;
 
-	--vd-radius: 14px;
-	--vd-shadow: 0 1px 2px rgba(18, 18, 20, 0.06), 0 12px 32px -12px rgba(18, 18, 20, 0.22);
+	--vd-gutter: clamp(16px, 5vw, 72px);
+	--vd-ease: cubic-bezier(0.2, 0.7, 0.2, 1);
 }
