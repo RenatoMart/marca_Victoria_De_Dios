@@ -1,0 +1,159 @@
+/* src/styles/Card.css - Estilos para Card */
+
+.card {
+	background: #ffffff;
+	border-radius: 12px;
+	overflow: hidden;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+	transition: all 0.3s ease;
+	cursor: pointer;
+	display: flex;
+	flex-direction: column;
+	max-width: 350px;
+	width: 100%;
+	position: relative;
+	border: 1px solid #e9ecef;
+}
+
+.card:hover {
+	transform: translateY(-4px);
+	box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+	border-color: #dee2e6;
+}
+
+.card-hovered {
+	border-color: #2c3e50;
+}
+
+/* Discount Badge */
+.card-discount {
+	position: absolute;
+	top: 15px;
+	right: 15px;
+	background: #2c3e50;
+	color: white;
+	padding: 8px 16px;
+	border-radius: 6px;
+	font-size: 0.9rem;
+	font-weight: 700;
+	z-index: 10;
+	box-shadow: 0 2px 8px rgba(44, 62, 80, 0.3);
+}
+
+/* Image Container */
+.card-image-container {
+	width: 100%;
+	height: 220px;
+	overflow: hidden;
+	position: relative;
+	background: #f8f9fa;
+}
+
+.card-image {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	transition: transform 0.4s ease;
+}
+
+.card:hover .card-image {
+	transform: scale(1.05);
+}
+
+/* Card Content */
+.card-content {
+	padding: 24px;
+	display: flex;
+	flex-direction: column;
+	flex-grow: 1;
+}
+
+.card-title {
+	font-size: 1.4rem;
+	font-weight: 700;
+	color: #212529;
+	margin: 0 0 12px 0;
+	line-height: 1.3;
+	min-height: 2.6rem;
+}
+
+.card-description {
+	font-size: 0.95rem;
+	color: #6c757d;
+	line-height: 1.6;
+	margin: 0 0 20px 0;
+	flex-grow: 1;
+}
+
+/* Card Footer */
+.card-footer {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-top: auto;
+	gap: 12px;
+}
+
+.card-price {
+	font-size: 1.8rem;
+	font-weight: 800;
+	color: #2c3e50;
+	letter-spacing: -0.5px;
+}
+
+.card-button {
+	background: #2c3e50;
+	color: white;
+	border: none;
+	padding: 12px 24px;
+	border-radius: 8px;
+	font-size: 0.95rem;
+	font-weight: 600;
+	cursor: pointer;
+	transition: all 0.3s ease;
+	box-shadow: 0 2px 8px rgba(44, 62, 80, 0.2);
+}
+
+.card-button:hover {
+	transform: translateY(-2px);
+	box-shadow: 0 4px 12px rgba(44, 62, 80, 0.3);
+	background: #34495e;
+}
+
+.card-button:active {
+	transform: translateY(0);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+	.card {
+		max-width: 100%;
+	}
+
+	.card-image-container {
+		height: 200px;
+	}
+
+	.card-content {
+		padding: 20px;
+	}
+
+	.card-title {
+		font-size: 1.2rem;
+	}
+
+	.card-price {
+		font-size: 1.5rem;
+	}
+
+	.card-footer {
+		flex-direction: column;
+		align-items: stretch;
+	}
+
+	.card-button {
+		width: 100%;
+		text-align: center;
+	}
+}
+

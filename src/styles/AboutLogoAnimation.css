@@ -1,0 +1,81 @@
+/* src/styles/AboutLogoAnimation.css - Estilos para logo animado "SOBRE NOSOTROS" */
+
+.about-logo-animation-container {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 100%;
+	padding: 60px 20px 40px;
+	min-height: 280px;
+	background: linear-gradient(180deg, #f8f9fa 0%, #ffffff 100%);
+}
+
+.about-logo-wrapper {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 20px;
+}
+
+.about-logo-line {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	gap: 8px;
+	flex-wrap: wrap;
+}
+
+.about-logo-letter {
+	font-size: 5rem;
+	font-weight: 900;
+	color: #2c3e50;
+	text-shadow:
+		0 2px 4px rgba(0, 0, 0, 0.1),
+		0 4px 8px rgba(0, 0, 0, 0.05);
+	display: inline-block;
+	transform-origin: center;
+	letter-spacing: 0.02em;
+	opacity: 0;
+	font-family: 'Inter', 'Arial Black', sans-serif;
+	line-height: 1;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+	.about-logo-animation-container {
+		padding: 40px 20px 30px;
+		min-height: 220px;
+	}
+
+	.about-logo-letter {
+		font-size: 3.5rem;
+	}
+
+	.about-logo-line {
+		gap: 5px;
+	}
+
+	.about-logo-wrapper {
+		gap: 15px;
+	}
+}
+
+@media (max-width: 480px) {
+	.about-logo-animation-container {
+		padding: 30px 10px 20px;
+		min-height: 180px;
+	}
+
+	.about-logo-letter {
+		font-size: 2.5rem;
+	}
+
+	.about-logo-line {
+		gap: 3px;
+	}
+
+	.about-logo-wrapper {
+		gap: 10px;
+	}
+}
+

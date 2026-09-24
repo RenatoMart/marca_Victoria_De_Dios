@@ -1,0 +1,58 @@
+.vd-mark {
+	position: relative;
+	display: inline-block;
+	vertical-align: middle;
+	flex: none;
+}
+
+.vd-mark__layer {
+	position: absolute;
+	inset: 0;
+	-webkit-mask-size: contain;
+	mask-size: contain;
+	-webkit-mask-repeat: no-repeat;
+	mask-repeat: no-repeat;
+	-webkit-mask-position: center;
+	mask-position: center;
+	background-size: 100% 100% !important;
+}
+
+/* Estampado en caliente: brillo metálico y leve relieve */
+.vd-mark--foil {
+	filter: drop-shadow(0 0.5px 0 rgba(255, 244, 205, 0.45)) drop-shadow(0 1px 1px rgba(0, 0, 0, 0.35));
+}
+
+/* Relieve alto: luz arriba-izquierda, sombra abajo-derecha */
+.vd-mark--emboss {
+	filter: drop-shadow(-0.8px -0.8px 0 rgba(255, 255, 255, 0.45))
+		drop-shadow(1px 1px 0.6px rgba(0, 0, 0, 0.45));
+}
+
+/* Bajo relieve: sombra dentro */
+.vd-mark--deboss {
+	filter: drop-shadow(-0.8px -0.8px 0.4px rgba(0, 0, 0, 0.55))
+		drop-shadow(0.8px 0.8px 0 rgba(255, 255, 255, 0.28));
+}
+
+/* Bordado: hilo en diagonal y volumen */
+.vd-mark--embroidery {
+	filter: drop-shadow(0 0.6px 0 rgba(255, 255, 255, 0.25)) drop-shadow(0 1.2px 1px rgba(0, 0, 0, 0.5));
+}
+
+/* Tinta absorbida por el soporte (kraft, tela, cerámica) */
+.vd-mark--print {
+	mix-blend-mode: multiply;
+	opacity: 0.92;
+}
+
+/* Grabado láser sobre metal/madera */
+.vd-mark--engrave {
+	opacity: 0.78;
+	filter: drop-shadow(0 0.6px 0 rgba(255, 255, 255, 0.35));
+}
+
+/* Etiqueta tejida: textura de trama */
+.vd-mark--woven .vd-mark__layer {
+	background-image: repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.18) 0 1px, transparent 1px 2px) !important;
+	background-blend-mode: multiply;
+}

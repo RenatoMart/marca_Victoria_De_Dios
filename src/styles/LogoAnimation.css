@@ -1,0 +1,65 @@
+/* src/styles/LogoAnimation.css - Estilos para logo animado "STORE" */
+
+.logo-animation-container {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 100%;
+	padding: 40px 20px;
+	min-height: 200px;
+	background: linear-gradient(180deg, #f8f9fa 0%, #ffffff 100%);
+}
+
+.logo-text {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	gap: 15px;
+	flex-wrap: wrap;
+}
+
+.logo-letter {
+	font-size: 7rem;
+	font-weight: 900;
+	color: #2c3e50;
+	text-shadow:
+		0 2px 4px rgba(0, 0, 0, 0.1),
+		0 4px 8px rgba(0, 0, 0, 0.05);
+	display: inline-block;
+	transform-origin: center;
+	letter-spacing: 0.05em;
+	opacity: 0;
+	font-family: 'Inter', 'Arial Black', sans-serif;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+	.logo-animation-container {
+		padding: 30px 20px;
+		min-height: 150px;
+	}
+
+	.logo-letter {
+		font-size: 4.5rem;
+	}
+
+	.logo-text {
+		gap: 10px;
+	}
+}
+
+@media (max-width: 480px) {
+	.logo-animation-container {
+		padding: 20px 10px;
+		min-height: 120px;
+	}
+
+	.logo-letter {
+		font-size: 3rem;
+	}
+
+	.logo-text {
+		gap: 5px;
+	}
+}
+
