@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import Mark, { PAINT } from '../brand/Mark';
 import { hasWebGL } from '../universo/webgl';
+import { useProgress } from '@react-three/drei';
 import Film from './film/Film';
 import { Score } from './score';
 import { DURATION, film, fmtTime, SCENES, sceneIndexAt } from './timeline';
@@ -36,6 +37,10 @@ export default function VideoPage() {
 	const score = useRef<Score | null>(null);
 	const recorder = useRef<MediaRecorder | null>(null);
 	const [ready, setReady] = useState(false);
+	// Precarga: texturas descargadas y shaders compilados antes de dejar reproducir.
+	const [prepared, setPrepared] = useState(false);
+	const onPrepared = useCallback(() => setPrepared(true), []);
+	const { progress } = useProgress();
 	const [started, setStarted] = useState(false);
 	const [playing, setPlaying] = useState(false);
 	const [muted, setMuted] = useState(false);
@@ -55,7 +60,8 @@ export default function VideoPage() {
 	useEffect(() => {
 		film.t = POSTER_T;
 		film.playing = false;
-		if (import.meta.env.DEV) Object.assign(window, { __film: film, __score: score });
+		if (import.meta.env.DEV)
+			Object.assign(window, { __film: film, __score: score });
 		// Desarrollo: /video?t=12.5 fija el video en un instante para revisarlo.
 		const fixed = import.meta.env.DEV
 			? new URLSearchParams(location.search).get('t')
@@ -100,6 +106,8 @@ export default function VideoPage() {
 
 	const play = useCallback(async (from = film.t) => {
 		const sc = getScore();
+		// Desbloqueo síncrono dentro del toque (móviles), antes de cualquier await.
+		sc.unlock();
 		await sc.ctx.resume();
 		const start = from >= DURATION - 0.05 ? 0 : from;
 		const when = sc.ctx.currentTime + 0.06;
@@ -240,7 +248,14 @@ export default function VideoPage() {
 								transform: `translate(${box.x}px, ${box.y}px) scale(${box.s})`,
 							}}
 						>
-							{ready && <Film width={res.w} height={res.h} playing={playing} />}
+							{ready && (
+								<Film
+									width={res.w}
+									height={res.h}
+									playing={playing}
+									onReady={onPrepared}
+								/>
+							)}
 						</div>
 					) : (
 						<div className='vv-nogl'>
@@ -253,21 +268,37 @@ export default function VideoPage() {
 
 					{!started && webgl && (
 						<div className='vv-poster'>
-							<button
-								type='button'
-								className='vv-bigplay'
-								onClick={() => startWith(true)}
-								aria-label='Reproducir con sonido'
-							>
-								<Icon d={PLAY} />
-							</button>
-							<button
-								type='button'
-								className='vv-silent'
-								onClick={() => startWith(false)}
-							>
-								Reproducir sin sonido
-							</button>
+							{prepared ? (
+								<>
+									<button
+										type='button'
+										className='vv-bigplay'
+										onClick={() => startWith(true)}
+										aria-label='Reproducir con sonido'
+									>
+										<Icon d={PLAY} />
+									</button>
+									<button
+										type='button'
+										className='vv-silent'
+										onClick={() => startWith(false)}
+									>
+										Reproducir sin sonido
+									</button>
+								</>
+							) : (
+								<div className='vv-loading' role='status' aria-live='polite'>
+									<span
+										className='vv-loading__bar'
+										style={
+											{
+												'--p': `${Math.min(progress, 99)}%`,
+											} as React.CSSProperties
+										}
+									/>
+									Preparando el video… {Math.round(Math.min(progress, 99))} %
+								</div>
+							)}
 							<span className='vv-poster__label'>
 								Ver el anuncio · {Math.round(DURATION)} s
 							</span>
@@ -284,7 +315,7 @@ export default function VideoPage() {
 					<button
 						type='button'
 						onClick={() => (playing ? pause() : void play())}
-						disabled={recording}
+						disabled={recording || !prepared}
 						aria-label={playing ? 'Pausar' : 'Reproducir'}
 					>
 						<Icon d={playing ? PAUSE : PLAY} />

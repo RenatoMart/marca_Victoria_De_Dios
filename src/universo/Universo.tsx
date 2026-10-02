@@ -1,5 +1,6 @@
 import {
 	Suspense,
+	useCallback,
 	useEffect,
 	useRef,
 	useState,
@@ -19,6 +20,7 @@ import { CustomizeCanvas3D, Guard3D, HeroCanvas3D } from './Lazy3D';
 import Reveal, { Lines } from './Reveal';
 import { rig, setCustom, type CustomState } from './rig';
 import { hasWebGL } from './webgl';
+import { QUALITY } from './quality';
 import './universo.css';
 
 /* ---------------------------------------------------------------------------------------------
@@ -53,11 +55,15 @@ function Hero({ three, onFail }: { three: boolean; onFail: () => void }) {
 	const copy = useRef<HTMLDivElement>(null);
 	const stage = useRef<HTMLDivElement>(null);
 	const reduced = useReducedMotion();
-	const fine = useFinePointer();
-	const dpr: [number, number] = fine ? [1, 1.75] : [1, 1.25];
 	// Cada escenario monta su canvas solo cuando está cerca de la pantalla.
 	const near = useNearViewport(stage, '200px');
 	const show3d = three && near;
+	// El póster se queda hasta que el 3D está compilado y dibujado.
+	const [ready, setReady] = useState(false);
+	const markReady = useCallback(() => setReady(true), []);
+	useEffect(() => {
+		if (!show3d) setReady(false);
+	}, [show3d]);
 	const seen = useInViewOnce(root, 0.4);
 
 	// Coreografía: visual principal → titular → texto → CTA, con diferencias mínimas.
@@ -164,7 +170,10 @@ function Hero({ three, onFail }: { three: boolean; onFail: () => void }) {
 					<Arrow />
 				</a>
 			</div>
-			<div className={`uv-hero__stage ${show3d ? 'is-3d' : ''}`} ref={stage}>
+			<div
+				className={`uv-hero__stage ${show3d && ready ? 'is-3d' : ''}`}
+				ref={stage}
+			>
 				<img
 					className='uv-poster'
 					src='/escenas/regalo-corporativo.jpg'
@@ -175,7 +184,7 @@ function Hero({ three, onFail }: { three: boolean; onFail: () => void }) {
 				{show3d && (
 					<Guard3D fallback={null} onError={onFail}>
 						<Suspense fallback={null}>
-							<HeroCanvas3D dpr={dpr} />
+							<HeroCanvas3D dpr={QUALITY.dpr} onReady={markReady} />
 						</Suspense>
 					</Guard3D>
 				)}
@@ -355,7 +364,12 @@ function HazloTuyo({ three, onFail }: { three: boolean; onFail: () => void }) {
 	const stage = useRef<HTMLDivElement>(null);
 	const near = useNearViewport(stage, '200px');
 	const show3d = three && near;
-	const dpr: [number, number] = fine ? [1, 1.75] : [1, 1.25];
+	// El póster se queda hasta que el 3D está compilado y dibujado.
+	const [ready, setReady] = useState(false);
+	const markReady = useCallback(() => setReady(true), []);
+	useEffect(() => {
+		if (!show3d) setReady(false);
+	}, [show3d]);
 	const choose = (s: CustomState) => {
 		setState(s);
 		setCustom(s);
@@ -377,13 +391,14 @@ function HazloTuyo({ three, onFail }: { three: boolean; onFail: () => void }) {
 					rig.invalidate();
 				}}
 			>
-				{show3d ? (
+				{show3d && (
 					<Guard3D fallback={null} onError={onFail}>
 						<Suspense fallback={null}>
-							<CustomizeCanvas3D dpr={dpr} />
+							<CustomizeCanvas3D dpr={QUALITY.dpr} onReady={markReady} />
 						</Suspense>
 					</Guard3D>
-				) : (
+				)}
+				{(!show3d || !ready) && (
 					<div className={`uv-tee uv-tee--fallback is-${state}`}>
 						<img
 							src='/mockups/800/ropa-camiseta-flatlay.jpg'

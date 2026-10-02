@@ -3,6 +3,7 @@ import { useFrame, useThree } from '@react-three/fiber';
 import {
 	CanvasTexture,
 	Color,
+	type Group,
 	type Mesh,
 	type MeshBasicMaterial,
 	type PerspectiveCamera,
@@ -85,8 +86,19 @@ function sample(keys: Key[], u: number) {
 	};
 }
 
+/** Separación entre escenas en el mundo: todas viven montadas, cada una en su sitio. */
+export const SCENE_GAP = 80;
+
+interface DirectorProps {
+	onScene: (i: number) => void;
+	/** Grupo de cada escena (para mostrar solo la activa). */
+	groups: React.RefObject<(Group | null)[]>;
+	/** false mientras se precompila: todas visibles para compilar sus shaders y hornear sombras. */
+	warm: React.RefObject<boolean>;
+}
+
 /** Mueve la cámara, el fondo y la luz de entorno según el tiempo del video. */
-export function Director({ onScene }: { onScene: (i: number) => void }) {
+export function Director({ onScene, groups, warm }: DirectorProps) {
 	const camera = useThree(s => s.camera) as PerspectiveCamera;
 	const scene = useThree(s => s.scene);
 	const current = useRef(-1);
@@ -101,9 +113,13 @@ export function Director({ onScene }: { onScene: (i: number) => void }) {
 			current.current = i;
 			onScene(i);
 		}
+		groups.current.forEach((g, gi) => {
+			if (g) g.visible = !warm.current || gi === i;
+		});
 		const s = sample(SHOTS[sc.id], seg(t, sc.start, sc.end));
-		camera.position.set(...s.pos);
-		target.set(...s.target);
+		const off = i * SCENE_GAP;
+		camera.position.set(s.pos[0] + off, s.pos[1], s.pos[2]);
+		target.set(s.target[0] + off, s.target[1], s.target[2]);
 		camera.lookAt(target);
 		if (Math.abs(camera.fov - s.fov) > 1e-3) {
 			camera.fov = s.fov;

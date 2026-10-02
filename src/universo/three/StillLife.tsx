@@ -1,5 +1,6 @@
 import { ContactShadows, RoundedBox } from '@react-three/drei';
 import { MAT } from './materials';
+import { QUALITY } from '../quality';
 import { MugBody } from './Mug';
 
 /**
@@ -43,7 +44,7 @@ export default function StillLife() {
 				blur={2.6}
 				opacity={0.42}
 				far={1.6}
-				resolution={512}
+				resolution={QUALITY.shadowRes}
 				frames={1}
 				color='#1b1610'
 			/>

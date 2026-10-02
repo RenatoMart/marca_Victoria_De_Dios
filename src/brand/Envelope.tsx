@@ -71,7 +71,8 @@ export default function Envelope() {
 			.add(
 				{
 					targets: q('.vd-env__letter'),
-					translateY: ['0%', '-60%'],
+					// En pantallas estrechas la tarjeta sube más: el título queda por encima del bolsillo en V.
+					translateY: ['0%', window.innerWidth < 640 ? '-78%' : '-60%'],
 					duration: 470,
 					easing: 'easeOutCubic',
 				},

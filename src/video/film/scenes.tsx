@@ -8,12 +8,10 @@ import {
 	type Mesh,
 	MeshBasicMaterial,
 	MeshStandardMaterial,
-	type PointLight,
 	SRGBColorSpace,
-	type SpotLight,
 	TextureLoader,
 } from 'three';
-import LightingRig from '../../universo/three/LightingRig';
+import { QUALITY } from '../../universo/quality';
 import StillLife from '../../universo/three/StillLife';
 import {
 	DECAL,
@@ -102,7 +100,6 @@ function Backdrop({
 export function SealScene({ which }: { which: 'apertura' | 'cierre' }) {
 	const sc = S[which];
 	const seal = useRef<Mesh>(null);
-	const spot = useRef<SpotLight>(null);
 	const mask = useLoader(TextureLoader, '/brand/symbol-mask.png');
 	const mat = useMemo(
 		() =>
@@ -122,32 +119,16 @@ export function SealScene({ which }: { which: 'apertura' | 'cierre' }) {
 	useFrame(() => {
 		const t = film.t - sc.start;
 		const m = seal.current;
-		const l = spot.current;
-		if (!m || !l) return;
+		if (!m) return;
 		const appear = prog(t, 0.15, 2.2, ease.seda);
 		mat.opacity = appear;
 		m.scale.setScalar(lerp(0.94, 1, appear));
 		m.position.z = lerp(-0.4, 0, appear);
-		// El haz cruza de izquierda a derecha y se queda como luz principal.
-		const sweep = prog(t, 0.3, 3.4, ease.ceremonia);
-		l.position.x = lerp(-6, 2.2, sweep);
-		l.intensity = lerp(0, 160, prog(t, 0.2, 1.4, ease.seda));
 	});
 
 	return (
 		<group>
 			<Backdrop inner='#1c2538' outer='#0b0f19' />
-			<ambientLight intensity={0.06} />
-			<spotLight
-				ref={spot}
-				position={[-6, 2.4, 4]}
-				angle={0.5}
-				penumbra={0.9}
-				distance={0}
-				decay={2}
-				intensity={0}
-				color='#fff2dc'
-			/>
 			<mesh
 				ref={seal}
 				material={mat}
@@ -166,7 +147,6 @@ export function UniverseScene() {
 	return (
 		<group>
 			<Backdrop inner='#f5efe5' outer='#d8cdbb' z={-8} size={60} />
-			<LightingRig />
 			<StillLife />
 		</group>
 	);
@@ -291,7 +271,6 @@ export function CustomScene() {
 	const sc = S.personalizados;
 	const mug = useRef<Group>(null);
 	const sheet = useRef<Mesh>(null);
-	const heat = useRef<PointLight>(null);
 	const logo = useLogoTexture(false);
 	const mirrored = useLogoTexture(true);
 	const mask = useRevealMask();
@@ -329,8 +308,7 @@ export function CustomScene() {
 		const t = film.t - sc.start;
 		const g = mug.current;
 		const sh = sheet.current;
-		const h = heat.current;
-		if (!g || !sh || !h) return;
+		if (!g || !sh) return;
 		// Giro de producto: unos grados, nunca una vuelta completa.
 		g.rotation.y =
 			lerp(-0.85, -0.5, prog(t, 0, 2.2, ease.suave)) +
@@ -348,8 +326,6 @@ export function CustomScene() {
 		sh.scale.setScalar(lerp(0.7, 0.83, toMug));
 		sheetMat.opacity = appear * (1 - prog(t, 4.9, 5.4, ease.salida));
 		sh.visible = sheetMat.opacity > 0.01;
-		// Prensa: destello de calor breve.
-		h.intensity = 7 * Math.sin(Math.PI * prog(t, 4.55, 5.5, ease.suave));
 		// La tinta pasa a la cerámica de abajo arriba.
 		const print = prog(t, 4.9, 6.8, ease.seda);
 		mask.offset.y = lerp(0.56, -0.56, print);
@@ -359,15 +335,6 @@ export function CustomScene() {
 	return (
 		<group>
 			<Backdrop inner='#f6f0e6' outer='#dcd1bf' z={-6} size={30} />
-			<LightingRig />
-			<pointLight
-				ref={heat}
-				position={[0.3, 0.6, 1.4]}
-				color='#ffae63'
-				intensity={0}
-				distance={4}
-				decay={2}
-			/>
 			<group ref={mug}>
 				<MugBody rim />
 				<mesh
@@ -388,7 +355,7 @@ export function CustomScene() {
 				blur={2.2}
 				opacity={0.45}
 				far={1.4}
-				resolution={512}
+				resolution={QUALITY.shadowRes}
 				frames={1}
 				color='#1b1610'
 			/>

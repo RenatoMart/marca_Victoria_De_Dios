@@ -56,12 +56,13 @@ export class Score {
 	private sfx: GainNode;
 	private reverb: ConvolverNode;
 	private voices: Voice[] = [];
+	private timer = 0;
 	private noise: AudioBuffer;
 	/** Salida extra para grabar el video con sonido. */
 	readonly stream: MediaStreamAudioDestinationNode;
 
 	constructor() {
-		this.ctx = new AudioContext({ latencyHint: 'playback' });
+		this.ctx = new AudioContext();
 		const c = this.ctx;
 		const comp = c.createDynamicsCompressor();
 		comp.threshold.value = -18;
@@ -98,18 +99,56 @@ export class Score {
 		);
 	}
 
-	/** Programa toda la música desde `from` (s del video) para que suene a partir de `when` (tiempo del contexto). */
+	/**
+	 * Desbloquea el audio dentro del mismo toque del usuario (iOS/Android lo exigen):
+	 * reanuda el contexto y reproduce un instante de silencio. Llamar SIN await previo.
+	 */
+	unlock() {
+		void this.ctx.resume();
+		const b = this.ctx.createBuffer(1, 1, this.ctx.sampleRate);
+		const src = this.ctx.createBufferSource();
+		src.buffer = b;
+		src.connect(this.ctx.destination);
+		src.start(0);
+	}
+
+	/**
+	 * Reproduce desde `from` (s del video) empezando en `when` (tiempo del contexto).
+	 * Programador anticipado: cada 100 ms se programan solo los sonidos de los próximos
+	 * 1,5 s. Crear cientos de osciladores de golpe satura el audio en móviles.
+	 */
 	play(from: number, when = this.ctx.currentTime + 0.05) {
 		this.stop();
+		const events = this.events(from).sort((a, b) => a[0] - b[0]);
 		const at = (s: number) => when + (s - from);
+		let next = 0;
+		const pump = () => {
+			const songNow = from + (this.ctx.currentTime - when);
+			while (next < events.length && events[next][0] <= songNow + 1.5) {
+				const [s, fn] = events[next++];
+				fn(at(s));
+			}
+			if (next >= events.length && this.timer) {
+				clearInterval(this.timer);
+				this.timer = 0;
+			}
+		};
+		pump();
+		this.timer = window.setInterval(pump, 100);
+	}
 
+	/** Lista de sonidos del video (instante en s del video → cómo sonarlo) a partir de `from`. */
+	private events(from: number) {
+		const list: [number, (t: number) => void][] = [];
 		for (const [s, d, chord] of PROGRESSION) {
 			if (s + d < from) continue;
 			const start = Math.max(s, from);
-			this.pad(chord, at(start), s + d - start, start > s);
-			this.sub(chord[0] - 12, at(start), Math.min(d, s + d - start));
+			list.push([start, t => this.pad(chord, t, s + d - start, start > s)]);
+			list.push([
+				start,
+				t => this.sub(chord[0] - 12, t, Math.min(d, s + d - start)),
+			]);
 		}
-
 		for (const [a, b, density] of ARP) {
 			const step = density === 2 ? BEAT / 2 : BEAT;
 			let i = 0;
@@ -118,11 +157,12 @@ export class Score {
 				const chord = chordAt(s);
 				const upper = [chord[2], chord[3], chord[4], chord[3] + 12];
 				const note = upper[i % upper.length];
-				this.pluck(note, at(s), i % 4 === 0 ? 0.11 : 0.075);
-				if (density === 2 && s > 18 && s < 31) this.shaker(at(s + step / 2));
+				const vel = i % 4 === 0 ? 0.11 : 0.075;
+				list.push([s, t => this.pluck(note, t, vel)]);
+				if (density === 2 && s > 18 && s < 31)
+					list.push([s + step / 2, t => this.shaker(t)]);
 			}
 		}
-
 		// Efectos sincronizados con la imagen.
 		const fx: [number, (t: number) => void][] = [
 			[0.9, t => this.bell(86, t, 0.08)],
@@ -137,12 +177,17 @@ export class Score {
 			[29.6, t => this.thud(t)],
 			[31.2, t => this.riser(t, 2.6)],
 			[43.6, t => this.bell(88, t, 0.09)],
-			[43.6, t => this.bell(81, t + 0.18, 0.06)],
+			[43.78, t => this.bell(81, t, 0.06)],
 		];
-		for (const [s, fn] of fx) if (s >= from) fn(at(s));
+		for (const e of fx) if (e[0] >= from) list.push(e);
+		return list;
 	}
 
 	stop() {
+		if (this.timer) {
+			clearInterval(this.timer);
+			this.timer = 0;
+		}
 		const now = this.ctx.currentTime;
 		for (const v of this.voices) {
 			try {
@@ -199,7 +244,7 @@ export class Score {
 				o.connect(og).connect(filter);
 				o.start(t);
 				o.stop(t + dur + 2.4);
-				this.voices.push(o);
+				this.track(o);
 			}
 		}
 	}
@@ -214,7 +259,7 @@ export class Score {
 		o.connect(g).connect(this.music);
 		o.start(t);
 		o.stop(t + dur + 1.4);
-		this.voices.push(o);
+		this.track(o);
 	}
 
 	/** Piano suave: ataque rápido y caída exponencial, con mucha sala. */
@@ -242,7 +287,7 @@ export class Score {
 			o.connect(og).connect(lp);
 			o.start(t);
 			o.stop(t + 1.9);
-			this.voices.push(o);
+			this.track(o);
 		}
 	}
 
@@ -266,7 +311,7 @@ export class Score {
 			g.connect(this.reverb);
 			o.start(t);
 			o.stop(t + decay + 0.1);
-			this.voices.push(o);
+			this.track(o);
 		}
 	}
 
@@ -276,7 +321,7 @@ export class Score {
 		s.loop = true;
 		s.start(t);
 		s.stop(t + dur + 0.1);
-		this.voices.push(s);
+		this.track(s);
 		return s;
 	}
 
@@ -316,7 +361,7 @@ export class Score {
 		o.connect(g).connect(this.sfx);
 		o.start(t);
 		o.stop(t + 0.7);
-		this.voices.push(o);
+		this.track(o);
 		const src = this.noiseSource(t, 0.12);
 		const lp = c.createBiquadFilter();
 		lp.type = 'lowpass';
@@ -357,6 +402,15 @@ export class Score {
 	}
 
 	/* ---------- Utilidades ---------- */
+
+	/** Guarda la voz para poder pararla; se olvida sola al terminar (sin crecer sin límite). */
+	private track(v: Voice) {
+		this.voices.push(v);
+		v.onended = () => {
+			const i = this.voices.indexOf(v);
+			if (i >= 0) this.voices.splice(i, 1);
+		};
+	}
 
 	private whiteNoise(seconds: number) {
 		const len = this.ctx.sampleRate * seconds;

@@ -50,7 +50,16 @@ export const DECAL = new CylinderGeometry(
 	ARC,
 );
 // Transfer curvado con la misma proporción que la banda impresa (no deforma el diseño).
-export const SHEET = new CylinderGeometry(0.62, 0.62, 0.62, 48, 1, true, -0.84, 1.68);
+export const SHEET = new CylinderGeometry(
+	0.62,
+	0.62,
+	0.62,
+	48,
+	1,
+	true,
+	-0.84,
+	1.68,
+);
 
 /** Encaja el logo en un lienzo con la proporción de la banda impresa (sin deformarlo). */
 export function useLogoTexture(mirror = false) {

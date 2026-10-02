@@ -2,6 +2,8 @@ import { Suspense, useEffect, type ReactNode } from 'react';
 import { Canvas, useThree } from '@react-three/fiber';
 import { ContactShadows, PerspectiveCamera } from '@react-three/drei';
 import { rig } from '../rig';
+import { QUALITY } from '../quality';
+import Precompile from './Precompile';
 import CameraRig, { shotFor } from './CameraRig';
 import LightingRig from './LightingRig';
 import StillLife from './StillLife';
@@ -23,21 +25,23 @@ function DemandBridge() {
 
 interface StageProps {
 	dpr: [number, number];
+	onReady?: () => void;
 	children: ReactNode;
 }
 
 /**
  * Canvas de un escenario: vive dentro de su contenedor y se desplaza con la página.
- * Render bajo demanda: si nada se mueve, la GPU no trabaja.
+ * Render bajo demanda: si nada se mueve, la GPU no trabaja. Los shaders se precompilan
+ * antes de mostrar nada (el póster 2D sigue visible hasta entonces).
  */
-function Stage({ dpr, children }: StageProps) {
+function Stage({ dpr, onReady, children }: StageProps) {
 	return (
 		<Canvas
 			className='uv-view'
 			frameloop='demand'
 			dpr={dpr}
 			gl={{
-				antialias: true,
+				antialias: QUALITY.antialias,
 				alpha: true,
 				powerPreference: 'high-performance',
 				preserveDrawingBuffer: import.meta.env.DEV,
@@ -45,14 +49,22 @@ function Stage({ dpr, children }: StageProps) {
 			aria-hidden='true'
 		>
 			<DemandBridge />
-			{children}
+			<Suspense fallback={null}>
+				{children}
+				<Precompile onReady={onReady} />
+			</Suspense>
 		</Canvas>
 	);
 }
 
-export function HeroCanvas({ dpr }: { dpr: [number, number] }) {
+interface CanvasProps {
+	dpr: [number, number];
+	onReady?: () => void;
+}
+
+export function HeroCanvas({ dpr, onReady }: CanvasProps) {
 	return (
-		<Stage dpr={dpr}>
+		<Stage dpr={dpr} onReady={onReady}>
 			<PerspectiveCamera
 				makeDefault
 				fov={26}
@@ -67,9 +79,9 @@ export function HeroCanvas({ dpr }: { dpr: [number, number] }) {
 	);
 }
 
-export function CustomizeCanvas({ dpr }: { dpr: [number, number] }) {
+export function CustomizeCanvas({ dpr, onReady }: CanvasProps) {
 	return (
-		<Stage dpr={dpr}>
+		<Stage dpr={dpr} onReady={onReady}>
 			<PerspectiveCamera
 				makeDefault
 				fov={26}
@@ -79,9 +91,7 @@ export function CustomizeCanvas({ dpr }: { dpr: [number, number] }) {
 			/>
 			<CameraRig shot={shotFor.product} parallax={0.12} />
 			<LightingRig reactive />
-			<Suspense fallback={null}>
-				<CustomMug />
-			</Suspense>
+			<CustomMug />
 			<mesh position={[0, -0.001, 0]} rotation={[-Math.PI / 2, 0, 0]}>
 				<circleGeometry args={[1.6, 64]} />
 				<meshStandardMaterial color='#ebe4d8' roughness={0.95} />
@@ -92,7 +102,7 @@ export function CustomizeCanvas({ dpr }: { dpr: [number, number] }) {
 				blur={2.2}
 				opacity={0.45}
 				far={1.4}
-				resolution={512}
+				resolution={QUALITY.shadowRes}
 				frames={1}
 				color='#1b1610'
 			/>

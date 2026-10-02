@@ -164,6 +164,30 @@
 }
 
 /* Movimiento reducido: sobre ya abierto, sin fijar la sección */
+/* Móvil: tarjeta más compacta y título en dos líneas si hace falta. */
+@media (max-width: 640px) {
+	.vd-env__body {
+		width: min(92vw, calc((100svh - 56px) * 0.86));
+	}
+
+	.vd-env__letter {
+		gap: 8px;
+		padding-top: 5%;
+	}
+
+	.vd-env__letter .vd-mark {
+		width: 38% !important;
+	}
+
+	.vd .vd-env__letter h1 {
+		font-size: 0.6rem;
+		letter-spacing: 0.2em;
+		line-height: 1.6;
+		padding: 0 12%;
+		text-wrap: balance;
+	}
+}
+
 .vd-env.is-static {
 	height: auto;
 }
