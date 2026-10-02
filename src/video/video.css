@@ -1,0 +1,340 @@
+/* ---------- /video: reproductor del anuncio ---------- */
+body {
+	background: #07090e;
+}
+
+.vv {
+	min-height: 100vh;
+	background: #07090e;
+	color: rgba(245, 240, 230, 0.78);
+	font-family: var(--vd-font-body);
+	font-weight: 300;
+	-webkit-font-smoothing: antialiased;
+}
+
+.vv a {
+	color: inherit;
+}
+
+.vv button {
+	font: inherit;
+	color: inherit;
+	background: none;
+	border: 0;
+	padding: 0;
+	cursor: pointer;
+}
+
+.vv button:disabled {
+	opacity: 0.4;
+	cursor: default;
+}
+
+.vv :focus-visible {
+	outline: 1px solid var(--vd-gold-light);
+	outline-offset: 3px;
+}
+
+.vv-top {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	height: 56px;
+	padding: 0 clamp(16px, 4vw, 48px);
+}
+
+.vv-brand {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	font-size: 0.72rem;
+	font-weight: 500;
+	letter-spacing: 0.22em;
+	text-transform: uppercase;
+}
+
+.vv-back {
+	font-size: 0.72rem;
+	font-weight: 500;
+	letter-spacing: 0.2em;
+	text-transform: uppercase;
+	opacity: 0.7;
+	transition: opacity 160ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.vv-back:hover {
+	opacity: 1;
+}
+
+.vv-main {
+	width: min(1280px, 100% - 32px);
+	margin: 0 auto;
+	padding: clamp(8px, 2vw, 24px) 0 64px;
+}
+
+.vv-stage {
+	position: relative;
+	aspect-ratio: 16 / 9;
+	overflow: hidden;
+	background: #0e1320;
+	box-shadow: 0 40px 80px -40px rgba(0, 0, 0, 0.8);
+}
+
+.vv-stage:fullscreen {
+	aspect-ratio: auto;
+	width: 100vw;
+	height: 100vh;
+	background: #000;
+}
+
+.vv-frame {
+	position: absolute;
+	left: 0;
+	top: 0;
+	transform-origin: 0 0;
+}
+
+.vv-poster {
+	position: absolute;
+	inset: 0;
+	display: flex;
+	align-items: flex-end;
+	justify-content: flex-start;
+	gap: 18px;
+	padding: 0 0 4.5% 4.5%;
+	background: linear-gradient(20deg, rgba(7, 9, 14, 0.6), transparent 40%);
+}
+
+.vv .vv-bigplay {
+	display: grid;
+	place-items: center;
+	width: 72px;
+	height: 72px;
+	border: 1px solid rgba(216, 189, 126, 0.7);
+	border-radius: 50%;
+	color: var(--vd-gold-light);
+	transition:
+		background-color 160ms cubic-bezier(0.4, 0, 0.2, 1),
+		color 160ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.vv .vv-bigplay:hover {
+	background: var(--vd-gold-light);
+	color: #0e1320;
+}
+
+.vv .vv-bigplay:active {
+	transform: scale(0.97);
+}
+
+.vv-poster__label {
+	margin-left: auto;
+	margin-right: 4.5%;
+	align-self: flex-end;
+	font-family: var(--vd-font-display);
+	font-size: clamp(1rem, 2vw, 1.5rem);
+	color: rgba(245, 240, 230, 0.8);
+}
+
+.vv-silent {
+	align-self: center;
+	font-size: 0.72rem;
+	letter-spacing: 0.18em;
+	text-transform: uppercase;
+	opacity: 0.75;
+	text-decoration: underline;
+	text-underline-offset: 4px;
+}
+
+.vv-rec {
+	position: absolute;
+	top: 14px;
+	left: 14px;
+	padding: 6px 12px;
+	border-radius: 999px;
+	background: rgba(7, 9, 14, 0.7);
+	font-size: 0.78rem;
+	color: #f2c4bd;
+	font-variant-numeric: tabular-nums;
+}
+
+.vv-nogl {
+	display: grid;
+	place-items: center;
+	height: 100%;
+	padding: 24px;
+	text-align: center;
+}
+
+/* Controles */
+.vv-controls {
+	display: flex;
+	align-items: center;
+	gap: 14px;
+	margin-top: 14px;
+}
+
+.vv-controls > button {
+	display: grid;
+	place-items: center;
+	width: 36px;
+	height: 36px;
+	border-radius: 50%;
+	transition: background-color 160ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.vv-controls > button:hover:not(:disabled) {
+	background: rgba(245, 240, 230, 0.08);
+}
+
+.vv-time {
+	min-width: 104px;
+	font-size: 0.8rem;
+	font-variant-numeric: tabular-nums;
+}
+
+.vv-track {
+	position: relative;
+	flex: 1;
+	display: flex;
+	align-items: center;
+}
+
+.vv-track i {
+	position: absolute;
+	top: 50%;
+	width: 1px;
+	height: 8px;
+	translate: 0 -50%;
+	background: rgba(245, 240, 230, 0.35);
+	pointer-events: none;
+}
+
+.vv-track input {
+	width: 100%;
+	height: 18px;
+	margin: 0;
+	appearance: none;
+	background: transparent;
+	cursor: pointer;
+}
+
+.vv-track input::-webkit-slider-runnable-track {
+	height: 2px;
+	background: linear-gradient(
+		90deg,
+		var(--vd-gold-light) var(--p),
+		rgba(245, 240, 230, 0.18) var(--p)
+	);
+}
+
+.vv-track input::-moz-range-track {
+	height: 2px;
+	background: rgba(245, 240, 230, 0.18);
+}
+
+.vv-track input::-moz-range-progress {
+	height: 2px;
+	background: var(--vd-gold-light);
+}
+
+.vv-track input::-webkit-slider-thumb {
+	appearance: none;
+	width: 12px;
+	height: 12px;
+	margin-top: -5px;
+	border-radius: 50%;
+	background: var(--vd-gold-light);
+}
+
+.vv-track input::-moz-range-thumb {
+	width: 12px;
+	height: 12px;
+	border: 0;
+	border-radius: 50%;
+	background: var(--vd-gold-light);
+}
+
+.vv .vv-export {
+	width: auto !important;
+	height: 34px !important;
+	padding: 0 14px !important;
+	border: 1px solid rgba(245, 240, 230, 0.25) !important;
+	border-radius: 999px !important;
+	font-size: 0.7rem;
+	font-weight: 500;
+	letter-spacing: 0.16em;
+	text-transform: uppercase;
+	white-space: nowrap;
+}
+
+/* Capítulos */
+.vv-chapters {
+	display: grid;
+	grid-template-columns: repeat(7, minmax(0, 1fr));
+	gap: 8px;
+	margin: 22px 0 0;
+	padding: 0;
+	list-style: none;
+}
+
+.vv-chapters button {
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+	width: 100%;
+	padding-top: 10px;
+	border-top: 1px solid rgba(245, 240, 230, 0.15) !important;
+	text-align: left;
+	font-size: 0.82rem;
+	color: rgba(245, 240, 230, 0.55);
+	transition:
+		color 160ms cubic-bezier(0.4, 0, 0.2, 1),
+		border-color 160ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.vv-chapters button span {
+	font-size: 0.68rem;
+	letter-spacing: 0.12em;
+	font-variant-numeric: tabular-nums;
+	opacity: 0.7;
+}
+
+.vv-chapters button:hover:not(:disabled),
+.vv-chapters button[aria-current='step'] {
+	color: rgba(245, 240, 230, 0.95);
+	border-color: var(--vd-gold-light) !important;
+}
+
+.vv-credits {
+	max-width: 70ch;
+	margin-top: 28px;
+	font-size: 0.78rem;
+	line-height: 1.6;
+	color: rgba(245, 240, 230, 0.45);
+}
+
+@media (max-width: 760px) {
+	.vv-chapters {
+		grid-template-columns: repeat(4, minmax(0, 1fr));
+	}
+
+	.vv-time {
+		min-width: 0;
+	}
+
+	.vv-controls {
+		flex-wrap: wrap;
+	}
+
+	.vv-track {
+		order: 10;
+		flex-basis: 100%;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.vv * {
+		transition-duration: 0.01ms !important;
+	}
+}

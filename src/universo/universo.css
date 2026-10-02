@@ -1,0 +1,528 @@
+/* ---------- El universo Victoria de Dios ---------- */
+.uv {
+	position: relative;
+	padding-bottom: clamp(72px, 10vw, 136px);
+}
+
+.uv-sr {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	overflow: hidden;
+	clip: rect(0 0 0 0);
+	white-space: nowrap;
+}
+
+.uv-view {
+	position: absolute !important;
+	inset: 0;
+}
+
+.uv-poster {
+	position: absolute;
+	inset: 0;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	transition: opacity var(--m-slow) var(--m-ease-std);
+}
+
+.is-3d .uv-poster {
+	opacity: 0;
+}
+
+.uv-block {
+	max-width: 1240px;
+	margin: 0 auto;
+	padding: clamp(72px, 10vw, 128px) var(--vd-gutter) 0;
+}
+
+.uv-head {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr);
+	align-items: baseline;
+	gap: 8px 48px;
+	margin-bottom: clamp(28px, 4vw, 48px);
+	padding-top: 20px;
+	border-top: 1px solid var(--vd-thread);
+}
+
+.uv h2 {
+	font-family: var(--vd-font-display);
+	font-size: clamp(2.2rem, 4.4vw, 3.4rem);
+	font-weight: 300;
+	line-height: 1.04;
+}
+
+.uv-head p {
+	max-width: 52ch;
+	color: var(--vd-ink-soft);
+	line-height: 1.65;
+}
+
+.uv h3 {
+	margin-top: 18px;
+	font-family: var(--vd-font-display);
+	font-size: 1.7rem;
+	font-weight: 400;
+}
+
+.uv-cat p,
+.uv-custom__text {
+	margin-top: 6px;
+	max-width: 42ch;
+	font-size: 0.92rem;
+	line-height: 1.6;
+	color: var(--vd-ink-soft);
+}
+
+.uv-line {
+	display: block;
+	overflow: hidden;
+	padding-bottom: 0.06em;
+}
+
+.uv-line > span {
+	display: inline-block;
+}
+
+/* Estados previos a cada revelado (solo con movimiento activo). */
+[data-reveal='pending'][data-variant='rise'] {
+	opacity: 0;
+}
+
+[data-reveal='pending'][data-variant='settle'] [data-settle] {
+	opacity: 0;
+}
+
+[data-reveal='pending'][data-variant='editorial'] [data-clip] {
+	clip-path: inset(0 100% 0 0);
+}
+
+[data-reveal='pending'] [data-line] > span {
+	transform: translateY(105%);
+}
+
+/* ---------- Botones y enlaces (microinteracciones) ---------- */
+.vd .uv-btn {
+	display: inline-flex;
+	align-items: center;
+	gap: 10px;
+	padding: 13px 22px;
+	border: 1px solid var(--vd-ink);
+	border-radius: 999px;
+	font-size: 0.78rem;
+	font-weight: 500;
+	letter-spacing: 0.14em;
+	text-transform: uppercase;
+	color: var(--vd-ink);
+	background: transparent;
+	transition:
+		background-color var(--m-fast) var(--m-ease-std),
+		color var(--m-fast) var(--m-ease-std),
+		transform var(--m-fast) var(--m-ease-std);
+}
+
+.uv-arrow {
+	transition: transform var(--m-fast) var(--m-ease-std);
+}
+
+.vd .uv-btn:hover,
+.vd .uv-btn:focus-visible {
+	background: var(--vd-ink);
+	color: var(--vd-paper);
+}
+
+.uv-btn:hover .uv-arrow,
+.uv-btn:focus-visible .uv-arrow,
+.uv-product__cta:hover .uv-arrow {
+	transform: translateX(3px);
+}
+
+.uv-btn:active {
+	transform: scale(var(--m-press));
+}
+
+.vd .uv-btn--solid {
+	background: var(--vd-ink);
+	color: var(--vd-paper);
+}
+
+.vd .uv-btn--solid:hover {
+	background: var(--vd-navy-deep);
+}
+
+/* Subrayado: crece desde la izquierda y se retira hacia la derecha. */
+.vd .uv-link {
+	position: relative;
+	display: inline-block;
+	margin-top: 14px;
+	padding: 2px 0;
+	font-size: 0.74rem;
+	font-weight: 500;
+	letter-spacing: 0.16em;
+	text-transform: uppercase;
+	color: var(--vd-ink);
+}
+
+.uv-link::after {
+	content: '';
+	position: absolute;
+	left: 0;
+	right: 0;
+	bottom: -2px;
+	height: 1px;
+	background: var(--vd-accent);
+	transform: scaleX(0.35);
+	transform-origin: right;
+	transition: transform var(--m-normal) var(--m-ease-in);
+}
+
+.uv-link:hover::after,
+.uv-link:focus-visible::after {
+	transform: scaleX(1);
+	transform-origin: left;
+}
+
+/* ---------- 1. Hero ---------- */
+.uv-hero {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
+	align-items: center;
+	gap: clamp(24px, 4vw, 56px);
+	min-height: min(calc(100svh - 56px), 860px);
+	padding: clamp(48px, 6vw, 88px) var(--vd-gutter);
+	background: radial-gradient(
+		90% 80% at 72% 42%,
+		#f6f1e8 0%,
+		#e6dccd 72%,
+		#ddd2c1 100%
+	);
+	overflow: hidden;
+}
+
+.uv-hero__copy {
+	max-width: 560px;
+	justify-self: end;
+	will-change: transform, opacity;
+}
+
+.uv-hero__seal {
+	display: block;
+	width: 64px;
+	margin-bottom: 28px;
+}
+
+.uv .uv-hero__title {
+	font-size: clamp(2.2rem, 3.9vw, 3.5rem);
+	line-height: 1.02;
+	letter-spacing: -0.015em;
+}
+
+.uv-hero__lede {
+	margin: 22px 0 30px;
+	max-width: 40ch;
+	line-height: 1.65;
+	color: var(--vd-ink-soft);
+}
+
+.uv-hero__stage {
+	position: relative;
+	height: min(68svh, 620px);
+	min-height: 360px;
+}
+
+.uv-hero[data-reveal='pending'] .uv-hero__seal {
+	clip-path: inset(100% 0 0 0);
+}
+
+.uv-hero[data-reveal='pending'] .uv-hero__lede,
+.uv-hero[data-reveal='pending'] .uv-hero__cta {
+	opacity: 0;
+}
+
+/* ---------- 2. Explora ---------- */
+.uv-cats {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr) minmax(0, 1fr);
+	gap: clamp(20px, 3vw, 40px);
+	align-items: start;
+}
+
+.uv-cat--estilo {
+	margin-top: clamp(24px, 5vw, 64px);
+}
+
+.uv-cat__grid {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: 8px;
+}
+
+.uv-cat__grid img {
+	width: 100%;
+	height: auto;
+	aspect-ratio: 1;
+	object-fit: cover;
+	display: block;
+}
+
+.uv-cat__frame {
+	aspect-ratio: 4 / 5;
+	overflow: hidden;
+	background: var(--vd-thread);
+}
+
+.uv-cat__frame img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	display: block;
+	transition: transform var(--m-slow) var(--m-ease-in);
+}
+
+.uv-cat--estilo:hover .uv-cat__frame img {
+	transform: translateY(-2%);
+}
+
+.uv-tee {
+	position: relative;
+	aspect-ratio: 4 / 3;
+	overflow: hidden;
+	background: var(--vd-thread);
+}
+
+.uv-tee img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	display: block;
+}
+
+/* Coordenadas del pecho en la foto (ver photo/apparel.tsx): 49 % / 45 %, ancho 26 %. */
+.uv-tee__print,
+.uv-tee__sheet {
+	position: absolute;
+	left: 49%;
+	top: 45%;
+	width: 26%;
+	translate: -50% -50%;
+}
+
+/* El diseño "se imprime" de izquierda a derecha, como el cabezal de la prensa. */
+.uv-tee__print {
+	mix-blend-mode: multiply;
+	opacity: 0.9;
+	clip-path: inset(0 100% 0 0);
+	transition: clip-path var(--m-slow) var(--m-ease-in);
+}
+
+.uv-tee.is-printed .uv-tee__print,
+.uv-tee.is-personal .uv-tee__print {
+	clip-path: inset(0 0 0 0);
+}
+
+.uv-tee__sheet {
+	width: 34%;
+	padding: 5%;
+	background: #fbfaf7;
+	box-shadow: 0 14px 24px -14px rgba(20, 26, 38, 0.4);
+	opacity: 0;
+	transform: scaleX(-1) translateY(-8px);
+	transition:
+		opacity var(--m-normal) var(--m-ease-std),
+		transform var(--m-normal) var(--m-ease-in);
+}
+
+.uv-tee.is-design .uv-tee__sheet {
+	opacity: 1;
+	transform: scaleX(-1);
+}
+
+/* ---------- 3. Destacados ---------- */
+.uv-products {
+	display: grid;
+	grid-template-columns: repeat(4, minmax(0, 1fr));
+	gap: clamp(16px, 2.4vw, 28px);
+}
+
+.uv-product__media {
+	overflow: hidden;
+	aspect-ratio: 4 / 5;
+	background: var(--vd-thread);
+	transition: box-shadow var(--m-normal) var(--m-ease-std);
+}
+
+.uv-product__media img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	display: block;
+	transition: transform var(--m-slow) var(--m-ease-in);
+}
+
+/* Elevación: sombra con desplazamiento y la foto se desliza; la tarjeta no salta. */
+.uv-product:hover .uv-product__media,
+.uv-product:focus-within .uv-product__media {
+	box-shadow: 0 18px 32px -20px rgba(20, 26, 38, 0.45);
+}
+
+.uv-product:hover .uv-product__media img,
+.uv-product:focus-within .uv-product__media img {
+	transform: translateY(-3%) scale(var(--m-hover));
+}
+
+.uv-product__cat {
+	margin-top: 14px;
+	font-size: 0.68rem;
+	font-weight: 500;
+	letter-spacing: 0.18em;
+	text-transform: uppercase;
+	color: var(--vd-ink-soft);
+}
+
+.uv .uv-product h3 {
+	margin-top: 4px;
+	font-size: 1.35rem;
+}
+
+.vd .uv-product__cta {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	margin-top: 8px;
+	font-size: 0.82rem;
+	color: var(--vd-ink);
+}
+
+/* ---------- 4. Hazlo tuyo ---------- */
+.uv-custom {
+	display: grid;
+	grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
+	align-items: center;
+	gap: clamp(24px, 4vw, 64px);
+}
+
+.uv-custom__stage {
+	position: relative;
+	aspect-ratio: 4 / 3;
+	background: radial-gradient(80% 80% at 50% 40%, #f6f1e8 0%, #e4dacb 100%);
+}
+
+.uv-custom__stage .uv-tee--fallback {
+	position: absolute;
+	inset: 0;
+	aspect-ratio: auto;
+}
+
+.uv-steps {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px;
+	margin: 28px 0 18px;
+}
+
+.vd .uv-steps button {
+	display: inline-flex;
+	align-items: center;
+	gap: 10px;
+	padding: 9px 16px 9px 10px;
+	border: 1px solid var(--vd-thread);
+	border-radius: 999px;
+	font-size: 0.86rem;
+	color: var(--vd-ink-soft);
+	transition:
+		border-color var(--m-fast) var(--m-ease-std),
+		color var(--m-fast) var(--m-ease-std);
+}
+
+.vd .uv-steps button:hover {
+	border-color: var(--vd-ink);
+	color: var(--vd-ink);
+}
+
+.vd .uv-steps button[aria-checked='true'] {
+	border-color: var(--vd-ink);
+	color: var(--vd-ink);
+}
+
+.uv-steps__n {
+	display: inline-grid;
+	place-items: center;
+	width: 22px;
+	height: 22px;
+	border-radius: 50%;
+	font-size: 0.72rem;
+	background: var(--vd-thread);
+	transition:
+		background-color var(--m-fast) var(--m-ease-std),
+		color var(--m-fast) var(--m-ease-std);
+}
+
+[aria-checked='true'] .uv-steps__n {
+	background: var(--vd-ink);
+	color: var(--vd-paper);
+}
+
+.uv-custom__text {
+	min-height: 3.2em;
+	margin-bottom: 28px;
+}
+
+/* ---------- 5. Cierre ---------- */
+.uv-close {
+	text-align: center;
+}
+
+.uv-close p {
+	margin: 14px auto 30px;
+	max-width: 46ch;
+	color: var(--vd-ink-soft);
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 960px) {
+	.uv-hero {
+		grid-template-columns: 1fr;
+		min-height: 0;
+	}
+
+	.uv-hero__stage {
+		order: -1;
+		height: auto;
+		aspect-ratio: 4 / 3;
+		min-height: 0;
+	}
+
+	.uv-hero__copy {
+		justify-self: start;
+	}
+
+	.uv-head,
+	.uv-custom {
+		grid-template-columns: 1fr;
+	}
+
+	.uv-cats {
+		grid-template-columns: 1fr;
+	}
+
+	.uv-cat--estilo {
+		margin-top: 0;
+	}
+
+	.uv-products {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.uv *,
+	.uv *::after {
+		transition-duration: 0.01ms !important;
+	}
+
+	.uv-hero__copy {
+		will-change: auto;
+	}
+}

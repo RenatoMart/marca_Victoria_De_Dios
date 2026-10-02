@@ -50,5 +50,10 @@ export default [
 			'react-dom/no-missing-button-type': 'off',
 		},
 	},
+	{
+		// React Three Fiber: las props de la escena (position, args, intensity…) las tipa TypeScript.
+		files: ['src/universo/three/**/*.tsx', 'src/video/film/**/*.tsx'],
+		rules: { 'react/no-unknown-property': 'off' },
+	},
 	prettier,
 ];

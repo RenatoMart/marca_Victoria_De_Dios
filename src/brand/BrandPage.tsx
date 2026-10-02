@@ -3,13 +3,19 @@ import Identity from './Identity';
 import Gallery from './Gallery';
 import Showcase from './Showcase';
 import Envelope from './Envelope';
+import Motion from './Motion';
+import BrandFilm from './BrandFilm';
 import './tokens.css';
 import './BrandPage.css';
 
 const NAV = [
 	{ href: '#escenas', label: 'Escenas' },
+	{ href: '#pelicula', label: 'Película' },
 	{ href: '#identidad', label: 'Identidad' },
 	{ href: '#color', label: 'Color' },
+	{ href: '#movimiento', label: 'Movimiento' },
+	{ href: '/animaciones', label: 'Animaciones' },
+	{ href: '/video', label: 'Video' },
 	{ href: '#productos', label: 'Productos' },
 ];
 
@@ -37,7 +43,9 @@ export default function BrandPage() {
 
 			<main>
 				<Showcase />
+				<BrandFilm />
 				<Identity />
+				<Motion />
 				<Gallery />
 			</main>
 

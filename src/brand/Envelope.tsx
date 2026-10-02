@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react';
 import anime from 'animejs';
 import Mark, { PAINT } from './Mark';
+import { CURVES } from './motion';
 import './Envelope.css';
 
 /** Duración virtual de la línea de tiempo: el scroll la recorre de 0 a TOTAL. */
@@ -111,11 +112,10 @@ export default function Envelope() {
 		// Sello "estampado" al cargar (sobre un contenedor distinto al que mueve el scroll).
 		anime({
 			targets: q('.vd-env__seal-press'),
-			scale: [1.35, 1],
+			scale: [1.28, 1],
 			opacity: [0, 1],
-			duration: 900,
 			delay: 350,
-			easing: 'easeOutElastic(1, .7)',
+			easing: CURVES.lacre.anime,
 		});
 
 		let frame = 0;
