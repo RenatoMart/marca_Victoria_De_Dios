@@ -1,0 +1,287 @@
+/* Victoria de Dios · base, tokens de color y sistema de interacción compartido.
+   Los tokens de MOVIMIENTO (--ease-*, --dur-*, --dist-*) los publica src/motion/tokens.ts. */
+:root {
+	--navy: #1f2a3e;
+	--navy-deep: #131a28;
+	--gold: #ae8c46;
+	--gold-light: #d8bd7e;
+	--gold-ink: #8a6d2f; /* oro con contraste suficiente sobre marfil */
+	--ivory: #f5f0e6;
+	--sand: #ebe2d2;
+	--paper: #faf7f1;
+	--ink: #1f2a3e;
+	--ink-soft: #566074;
+	--line: #ddd4c4;
+	--foil: linear-gradient(115deg, #8a6a2c 0%, #e9d18f 22%, #a8843c 40%, #f6e7b0 54%, #9c7a35 72%, #d9bb72 90%, #8f6f30 100%);
+
+	--font-display: 'Cormorant Garamond', 'Times New Roman', serif;
+	--font-caps: 'Cinzel', 'Trajan Pro', serif;
+	--font-body: 'Jost', system-ui, sans-serif;
+
+	--gutter: clamp(20px, 5vw, 72px);
+	--radius: 22px;
+	--header-h: 72px;
+
+	/* Valores por defecto por si los tokens JS tardan; se sobrescriben en main.tsx */
+	--ease-entrance: cubic-bezier(0.22, 1, 0.36, 1);
+	--ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+	--ease-emphasized: cubic-bezier(0.65, 0, 0.35, 1);
+	--ease-exit: cubic-bezier(0.4, 0, 1, 1);
+	--dur-instant: 0.09s;
+	--dur-fast: 0.18s;
+	--dur-normal: 0.36s;
+	--dur-slow: 0.7s;
+}
+
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+}
+
+html {
+	scroll-behavior: smooth;
+	scroll-padding-top: calc(var(--header-h) + 8px);
+	-webkit-text-size-adjust: 100%;
+}
+
+body {
+	font-family: var(--font-body);
+	font-weight: 300;
+	font-size: clamp(16px, 1.05vw, 18px);
+	line-height: 1.6;
+	color: var(--ink);
+	background: var(--navy-deep);
+	text-rendering: optimizeLegibility;
+	-webkit-font-smoothing: antialiased;
+	overflow-x: clip;
+}
+body.is-locked {
+	overflow: hidden;
+}
+
+img {
+	display: block;
+	max-width: 100%;
+}
+a {
+	color: inherit;
+	text-decoration: none;
+}
+button,
+input {
+	font: inherit;
+	color: inherit;
+}
+button {
+	cursor: pointer;
+	background: none;
+	border: 0;
+}
+
+:focus-visible {
+	outline: 2px solid var(--gold-light);
+	outline-offset: 3px;
+	border-radius: 4px;
+}
+.on-light :focus-visible {
+	outline-color: var(--gold-ink);
+}
+
+.sr-only {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	overflow: hidden;
+	clip: rect(0 0 0 0);
+	white-space: nowrap;
+}
+.skip {
+	position: fixed;
+	left: 16px;
+	top: -60px;
+	z-index: 100;
+	background: var(--ivory);
+	color: var(--navy);
+	padding: 10px 16px;
+	border-radius: 999px;
+	transition: top var(--dur-fast) var(--ease-standard);
+}
+.skip:focus {
+	top: 12px;
+}
+
+.wrap {
+	width: 100%;
+	max-width: 1380px;
+	margin-inline: auto;
+	padding-inline: var(--gutter);
+}
+
+/* ---------- Tipografía ---------- */
+.eyebrow {
+	font-family: var(--font-caps);
+	font-size: 0.72rem;
+	letter-spacing: 0.3em;
+	text-transform: uppercase;
+	color: var(--gold-ink);
+	display: inline-flex;
+	align-items: center;
+	gap: 14px;
+}
+.eyebrow::before {
+	content: '';
+	width: 34px;
+	height: 1px;
+	background: currentColor;
+}
+.on-dark .eyebrow {
+	color: var(--gold-light);
+}
+
+.display {
+	font-family: var(--font-display);
+	font-weight: 500;
+	line-height: 0.98;
+	letter-spacing: -0.012em;
+	text-wrap: balance;
+}
+.display em {
+	font-style: italic;
+	font-weight: 400;
+}
+.lead {
+	max-width: 46ch;
+	color: var(--ink-soft);
+	font-size: 1.08em;
+}
+.on-dark .lead {
+	color: rgba(245, 240, 230, 0.72);
+}
+
+/* Máscara de línea: el texto asciende desde un borde invisible (titulares). */
+.line {
+	display: block;
+	overflow: hidden;
+	padding-bottom: 0.12em;
+	margin-bottom: -0.12em;
+}
+.line > span {
+	display: block;
+	will-change: transform;
+}
+
+/* ---------- Botones ---------- */
+.btn {
+	--bg: var(--navy);
+	--fg: var(--ivory);
+	--bg-hover: #2b3a55;
+	display: inline-flex;
+	align-items: center;
+	gap: 12px;
+	padding: 15px 26px;
+	border-radius: 999px;
+	background: var(--bg);
+	color: var(--fg);
+	font-family: var(--font-body);
+	font-weight: 400;
+	font-size: 0.95rem;
+	letter-spacing: 0.04em;
+	border: 1px solid transparent;
+	transition:
+		background-color var(--dur-fast) var(--ease-standard),
+		color var(--dur-fast) var(--ease-standard),
+		transform var(--dur-instant) var(--ease-standard);
+}
+.btn svg {
+	transition: transform var(--dur-fast) var(--ease-entrance);
+}
+.btn:hover {
+	background: var(--bg-hover);
+}
+.btn:hover svg {
+	transform: translateX(4px);
+}
+.btn:active {
+	transform: translateY(1px) scale(0.985);
+}
+.btn--gold {
+	--bg: var(--ivory);
+	--fg: var(--navy);
+	--bg-hover: var(--gold-light);
+}
+.btn--ghost {
+	--bg: transparent;
+	--fg: var(--ivory);
+	--bg-hover: rgba(245, 240, 230, 0.1);
+	border-color: rgba(245, 240, 230, 0.35);
+}
+.on-light .btn--ghost {
+	--fg: var(--navy);
+	--bg-hover: rgba(31, 42, 62, 0.06);
+	border-color: rgba(31, 42, 62, 0.28);
+}
+
+/* Enlace: subrayado que entra por la izquierda y sale por la derecha. */
+.u-link {
+	position: relative;
+	display: inline-flex;
+	align-items: center;
+	gap: 10px;
+	padding-bottom: 4px;
+	font-weight: 400;
+	letter-spacing: 0.03em;
+}
+.u-link::after {
+	content: '';
+	position: absolute;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	height: 1px;
+	background: currentColor;
+	transform-origin: right;
+	transform: scaleX(0.28);
+	transition: transform var(--dur-normal) var(--ease-entrance);
+}
+.u-link:hover::after,
+.u-link:focus-visible::after {
+	transform-origin: left;
+	transform: scaleX(1);
+}
+.u-link svg {
+	transition: transform var(--dur-fast) var(--ease-entrance);
+}
+.u-link:hover svg {
+	transform: translateX(4px);
+}
+
+/* Barra de progreso de lectura */
+.progress {
+	position: fixed;
+	inset: 0 0 auto 0;
+	height: 2px;
+	z-index: 60;
+	background: var(--foil);
+	transform-origin: left;
+	pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	html {
+		scroll-behavior: auto;
+	}
+	*,
+	*::before,
+	*::after {
+		transition-duration: 0.01ms !important;
+		animation-duration: 0.01ms !important;
+		animation-iteration-count: 1 !important;
+	}
+}
+
+.on-dark {
+	color: var(--ivory);
+}

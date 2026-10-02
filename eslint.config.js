@@ -52,7 +52,7 @@ export default [
 	},
 	{
 		// React Three Fiber: las props de la escena (position, args, intensity…) las tipa TypeScript.
-		files: ['src/universo/three/**/*.tsx', 'src/video/film/**/*.tsx'],
+		files: ['src/universo/three/**/*.tsx', 'src/video/film/**/*.tsx', 'src/presentacion1/components/three/**/*.tsx'],
 		rules: { 'react/no-unknown-property': 'off' },
 	},
 	prettier,
