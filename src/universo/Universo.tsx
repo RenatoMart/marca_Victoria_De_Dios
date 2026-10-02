@@ -56,7 +56,7 @@ function Hero({ three, onFail }: { three: boolean; onFail: () => void }) {
 	const stage = useRef<HTMLDivElement>(null);
 	const reduced = useReducedMotion();
 	// Cada escenario monta su canvas solo cuando está cerca de la pantalla.
-	const near = useNearViewport(stage, '200px');
+	const near = useNearViewport(stage, '700px');
 	const show3d = three && near;
 	// El póster se queda hasta que el 3D está compilado y dibujado.
 	const [ready, setReady] = useState(false);
@@ -362,7 +362,7 @@ function HazloTuyo({ three, onFail }: { three: boolean; onFail: () => void }) {
 	});
 	const fine = useFinePointer();
 	const stage = useRef<HTMLDivElement>(null);
-	const near = useNearViewport(stage, '200px');
+	const near = useNearViewport(stage, '700px');
 	const show3d = three && near;
 	// El póster se queda hasta que el 3D está compilado y dibujado.
 	const [ready, setReady] = useState(false);

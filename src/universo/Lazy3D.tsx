@@ -2,6 +2,14 @@ import { Component, lazy, type ReactNode } from 'react';
 
 /** El código 3D (three.js + R3F) se descarga solo cuando un escenario se acerca. */
 const load = () => import('./three/Views');
+
+/** Descarga el código 3D en segundo plano (sin montar nada) en cuanto se abre la página. */
+export function prefetch3D() {
+	const run = () => void load().catch(() => undefined);
+	if ('requestIdleCallback' in window)
+		window.requestIdleCallback(run, { timeout: 1500 });
+	else setTimeout(run, 300);
+}
 export const HeroCanvas3D = lazy(() =>
 	load().then(m => ({ default: m.HeroCanvas })),
 );
