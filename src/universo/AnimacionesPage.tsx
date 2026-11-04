@@ -22,12 +22,15 @@ export default function AnimacionesPage() {
 				<a
 					href='/'
 					className='vd-nav__brand'
-					aria-label='Victoria de Dios, volver al manual'
+					aria-label='Victoria de Dios, volver a la Presentación 1'
 				>
 					<Mark kind='symbol' width='26px' mono={PAINT.goldLight} />
 				</a>
 				<div className='vd-nav__links'>
-					<a href='/'>Volver al manual</a>
+					<a href='/'>Presentación 1</a>
+					<a href='/presentacion2'>Presentación 2</a>
+					<a href='/video'>Video 1</a>
+					<a href='/video2'>Video 2</a>
 				</div>
 			</nav>
 

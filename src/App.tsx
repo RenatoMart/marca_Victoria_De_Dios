@@ -7,7 +7,10 @@ const AnimacionesPage = lazy(() => import('./universo/AnimacionesPage'));
 /** /video: el anuncio de marca (three.js y la música solo se descargan aquí). */
 const VideoPage = lazy(() => import('./video/VideoPage'));
 
-/** /presentacion1: la web promocional de marca (Motion + R3F), con sus propios estilos. */
+/** /video2: la película de motion design en MP4. */
+const Video2Page = lazy(() => import('./video/Video2Page'));
+
+/** /presentacion2: la web promocional de marca (Motion + R3F), con sus propios estilos. */
 const Presentacion1Page = lazy(() => import('./presentacion1/Page'));
 
 function App() {
@@ -16,10 +19,17 @@ function App() {
 		: null;
 	if (preview) return <Preview id={preview} />;
 	const path = location.pathname.replace(/\/+$/, '');
-	if (path === '/presentacion1') {
+	if (path === '/presentacion2') {
 		return (
 			<Suspense fallback={null}>
 				<Presentacion1Page />
+			</Suspense>
+		);
+	}
+	if (path === '/video2') {
+		return (
+			<Suspense fallback={null}>
+				<Video2Page />
 			</Suspense>
 		);
 	}

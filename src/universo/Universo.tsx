@@ -16,7 +16,7 @@ import {
 	useNearViewport,
 	useReducedMotion,
 } from './hooks';
-import { CustomizeCanvas3D, Guard3D, HeroCanvas3D } from './Lazy3D';
+import { CustomizeCanvas3D, Guard3D } from './Lazy3D';
 import Reveal, { Lines } from './Reveal';
 import { rig, setCustom, type CustomState } from './rig';
 import { hasWebGL } from './webgl';
@@ -50,20 +50,10 @@ function Arrow() {
 }
 
 /* ---------- 1. Descubrir: revelado de marca + bodegón 3D ---------- */
-function Hero({ three, onFail }: { three: boolean; onFail: () => void }) {
+function Hero() {
 	const root = useRef<HTMLDivElement>(null);
 	const copy = useRef<HTMLDivElement>(null);
-	const stage = useRef<HTMLDivElement>(null);
 	const reduced = useReducedMotion();
-	// Cada escenario monta su canvas solo cuando está cerca de la pantalla.
-	const near = useNearViewport(stage, '700px');
-	const show3d = three && near;
-	// El póster se queda hasta que el 3D está compilado y dibujado.
-	const [ready, setReady] = useState(false);
-	const markReady = useCallback(() => setReady(true), []);
-	useEffect(() => {
-		if (!show3d) setReady(false);
-	}, [show3d]);
 	const seen = useInViewOnce(root, 0.4);
 
 	// Coreografía: visual principal → titular → texto → CTA, con diferencias mínimas.
@@ -170,10 +160,7 @@ function Hero({ three, onFail }: { three: boolean; onFail: () => void }) {
 					<Arrow />
 				</a>
 			</div>
-			<div
-				className={`uv-hero__stage ${show3d && ready ? 'is-3d' : ''}`}
-				ref={stage}
-			>
+			<div className='uv-hero__stage'>
 				<img
 					className='uv-poster'
 					src='/escenas/regalo-corporativo.jpg'
@@ -181,13 +168,6 @@ function Hero({ three, onFail }: { three: boolean; onFail: () => void }) {
 					width={1024}
 					height={572}
 				/>
-				{show3d && (
-					<Guard3D fallback={null} onError={onFail}>
-						<Suspense fallback={null}>
-							<HeroCanvas3D dpr={QUALITY.dpr} onReady={markReady} />
-						</Suspense>
-					</Guard3D>
-				)}
 			</div>
 		</div>
 	);
@@ -506,7 +486,7 @@ export default function Universo({ part }: { part?: 'custom' } = {}) {
 				<HazloTuyo three={three} onFail={fail} />
 			) : (
 				<>
-					<Hero three={three} onFail={fail} />
+					<Hero />
 					<Explora />
 					<Destacados />
 					<HazloTuyo three={three} onFail={fail} />

@@ -223,13 +223,13 @@ export default function VideoPage() {
 				<a
 					href='/'
 					className='vv-brand'
-					aria-label='Victoria de Dios, volver al manual'
+					aria-label='Victoria de Dios, volver a la Presentación 1'
 				>
 					<Mark kind='symbol' width='26px' mono={PAINT.goldLight} />
 					<span>Anuncio de marca · {Math.round(DURATION)} s</span>
 				</a>
 				<a href='/' className='vv-back'>
-					Volver al manual
+					Volver a la Presentación 1
 				</a>
 			</header>
 

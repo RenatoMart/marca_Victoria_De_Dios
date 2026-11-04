@@ -9,6 +9,14 @@ const LINKS = [
 	{ href: '#hazlo-tuyo', label: 'Hazlo tuyo' },
 ];
 
+/** Otras páginas del sitio: viven en rutas propias, no son anclas de esta página. */
+const PAGES = [
+	{ href: '/', label: 'Presentación 1' },
+	{ href: '/animaciones', label: 'Animaciones' },
+	{ href: '/video', label: 'Video 1' },
+	{ href: '/video2', label: 'Video 2' },
+];
+
 /**
  * Navegación: interacción frecuente → rápida. El menú móvil abre en 360 ms con un stagger
  * mínimo y cierra en 180 ms (la salida es más corta que la entrada).
@@ -48,6 +56,12 @@ export default function Nav({ light }: { light: boolean }) {
 					{LINKS.map(l => (
 						<a key={l.href} className='u-link' href={l.href}>
 							{l.label}
+						</a>
+					))}
+					<span className='nav__sep' aria-hidden />
+					{PAGES.map(p => (
+						<a key={p.href} className='u-link nav__page' href={p.href}>
+							{p.label}
 						</a>
 					))}
 				</nav>
@@ -93,6 +107,13 @@ export default function Nav({ light }: { light: boolean }) {
 								</motion.li>
 							))}
 						</motion.ul>
+						<nav className='menu__pages' aria-label='Otras páginas'>
+							{PAGES.map(p => (
+								<a key={p.href} href={p.href}>
+									{p.label}
+								</a>
+							))}
+						</nav>
 						<a className='btn btn--gold' href={BRAND.contactHref} onClick={() => setOpen(false)}>
 							{BRAND.contactLabel}
 						</a>

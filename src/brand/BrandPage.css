@@ -747,6 +747,13 @@ main > .vd-section:last-child {
 
 /* ---------- Responsive ---------- */
 @media (max-width: 900px) {
+	/* La barra se desliza de lado: el degradado del borde avisa de que hay más enlaces. */
+	.vd-nav__links {
+		-webkit-mask-image: linear-gradient(90deg, #000 85%, transparent);
+		mask-image: linear-gradient(90deg, #000 85%, transparent);
+		padding-right: 24px;
+	}
+
 	.vd-head {
 		grid-template-columns: 1fr;
 	}

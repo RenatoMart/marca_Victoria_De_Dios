@@ -9,15 +9,11 @@ import './tokens.css';
 import './BrandPage.css';
 
 const NAV = [
-	{ href: '#escenas', label: 'Escenas' },
-	{ href: '#pelicula', label: 'Película' },
-	{ href: '#identidad', label: 'Identidad' },
-	{ href: '#color', label: 'Color' },
-	{ href: '#movimiento', label: 'Movimiento' },
 	{ href: '/animaciones', label: 'Animaciones' },
-	{ href: '/video', label: 'Video' },
-	{ href: '/presentacion1', label: 'Presentación' },
-	{ href: '#productos', label: 'Productos' },
+	{ href: '/video', label: 'Video 1' },
+	{ href: '/video2', label: 'Video 2' },
+	{ href: '/', label: 'Presentación 1' },
+	{ href: '/presentacion2', label: 'Presentación 2' },
 ];
 
 export default function BrandPage() {
