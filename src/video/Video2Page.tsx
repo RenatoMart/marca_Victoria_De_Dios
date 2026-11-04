@@ -1,4 +1,5 @@
 import Mark, { PAINT } from '../brand/Mark';
+import SiteNav from '../brand/SiteNav';
 import '../brand/tokens.css';
 import '../brand/BrandPage.css';
 
@@ -6,24 +7,7 @@ import '../brand/BrandPage.css';
 export default function Video2Page() {
 	return (
 		<div className='vd'>
-			<nav className='vd-nav' aria-label='Navegación'>
-				<a
-					href='/'
-					className='vd-nav__brand'
-					aria-label='Victoria de Dios, volver a la Presentación 1'
-				>
-					<Mark kind='symbol' width='26px' mono={PAINT.goldLight} />
-				</a>
-				<div className='vd-nav__links'>
-					<a href='/'>Presentación 1</a>
-					<a href='/presentacion2'>Presentación 2</a>
-					<a href='/animaciones'>Animaciones</a>
-					<a href='/video'>Video 1</a>
-					<a href='/video2' aria-current='page'>
-						Video 2
-					</a>
-				</div>
-			</nav>
+			<SiteNav current='/video2' />
 
 			<main style={{ padding: '96px 5vw 64px', display: 'grid', placeItems: 'center' }}>
 				<video

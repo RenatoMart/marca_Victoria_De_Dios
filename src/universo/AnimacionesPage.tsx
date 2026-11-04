@@ -1,4 +1,5 @@
 import Mark, { PAINT } from '../brand/Mark';
+import SiteNav from '../brand/SiteNav';
 import { useEffect } from 'react';
 import { prefetch3D } from './Lazy3D';
 import { hasWebGL } from './webgl';
@@ -18,21 +19,7 @@ export default function AnimacionesPage() {
 
 	return (
 		<div className='vd'>
-			<nav className='vd-nav' aria-label='Navegación'>
-				<a
-					href='/'
-					className='vd-nav__brand'
-					aria-label='Victoria de Dios, volver a la Presentación 1'
-				>
-					<Mark kind='symbol' width='26px' mono={PAINT.goldLight} />
-				</a>
-				<div className='vd-nav__links'>
-					<a href='/'>Presentación 1</a>
-					<a href='/presentacion2'>Presentación 2</a>
-					<a href='/video'>Video 1</a>
-					<a href='/video2'>Video 2</a>
-				</div>
-			</nav>
+			<SiteNav current='/animaciones' />
 
 			<main>
 				<Universo />

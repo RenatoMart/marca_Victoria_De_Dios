@@ -88,13 +88,36 @@ body {
 	color: rgba(245, 240, 230, 0.66);
 }
 
+.vd-nav__left {
+	display: flex;
+	align-items: center;
+	flex-shrink: 0;
+	gap: clamp(14px, 2.4vw, 32px);
+}
+
 .vd-nav__brand {
 	display: flex;
+}
+
+.vd-nav__left a:not(.vd-nav__brand) {
+	font-family: var(--vd-font-body);
+	font-size: 0.7rem;
+	font-weight: 500;
+	letter-spacing: 0.2em;
+	text-transform: uppercase;
+	white-space: nowrap;
+	transition: color 0.2s;
+}
+
+.vd-nav__left a:hover,
+.vd-nav a[aria-current='page'] {
+	color: var(--vd-ivory);
 }
 
 .vd-nav__links {
 	display: flex;
 	gap: clamp(16px, 3vw, 40px);
+	min-width: 0;
 	overflow-x: auto;
 	scrollbar-width: none;
 }
